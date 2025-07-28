@@ -22,7 +22,7 @@ clf = joblib.load(MODEL_PATH)
 enc = joblib.load(ENCODER_PATH)
 cols = clf.feature_names_in_
 model = SentenceTransformer(SBERT_MODEL_PATH)
-print("✅ Model and encoder loaded. Beginning PDF processing...")
+print(" Model and encoder loaded. Beginning PDF processing...")
 
 # Feature Extraction
 def extract_features(text, fs, bold, centered, italic, page, x0):
@@ -42,7 +42,7 @@ def process_pdf(path):
     print(f"🔍 Reading PDF: {path}")
     try:
         if not os.path.exists(path):
-            print(f"❌ File not found: {path}")
+            print(f" File not found: {path}")
             return [], []
 
         doc = fitz.open(path)
@@ -103,7 +103,7 @@ def process_pdf(path):
         return headings, all_lines
 
     except Exception as e:
-        print(f"❌ Failed to process {path}: {e}")
+        print(f" Failed to process {path}: {e}")
         return [], []
 
 # Batch PDF Threaded
@@ -120,7 +120,7 @@ def process_all_pdfs(pdf_list, pdf_dir):
 # Ranking and Subsection Extraction
 def rank_and_extract(task, sections, all_paras):
     if not sections:
-        print("⚠️ No valid sections extracted. Skipping ranking.")
+        print(" No valid sections extracted. Skipping ranking.")
         return [], []
 
     task_emb = model.encode(task, convert_to_tensor=True)
@@ -169,7 +169,7 @@ def rank_and_extract(task, sections, all_paras):
 
 # Per-Collection Processor
 def process_collection(folder_name):
-    print(f"\n📂 Processing: {folder_name}")
+    print(f"\n Processing: {folder_name}")
     start_time = time.time()
 
     json_path = os.path.join(folder_name, "challenge1b_input.json")
@@ -206,12 +206,12 @@ def process_collection(folder_name):
 # Main: Single Collection Based on Arg
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("❌ Usage: python process_collection.py <Collection_Folder_Name>")
+        print(" Usage: python process_collection.py <Collection_Folder_Name>")
         sys.exit(1)
 
     collection_name = sys.argv[1]
     if not os.path.isdir(collection_name):
-        print(f"❌ Folder '{collection_name}' not found.")
+        print(f" Folder '{collection_name}' not found.")
         sys.exit(1)
 
     process_collection(collection_name)
